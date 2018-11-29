@@ -67,7 +67,7 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
       let photoReference = photoReferences[indexPath.item]
         guard let urlImage = photoReference.imageURL.usingHTTPS else {return}
         
-        if let imageItem = cache[photoReference.id]{
+        if let imageItem = cache.value(for: photoReference.id){
             cell.imageView.image = imageItem
             
         } else {

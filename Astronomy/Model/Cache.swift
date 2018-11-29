@@ -11,22 +11,24 @@ import Foundation
 class Cache <Key: Hashable, Value> {
     
     func cache(value: Value, for key: Key){
-        cachedItems[key] = value
+        queue.async {
+            self.cachedItems[key] = value
+        }
+        
      
     }
     
-    subscript(_ key: Key)-> Value? {
-        return cachedItems[key]
-        
+    
+    
+    func value(for key: Key)-> Value? {
+     return queue.sync {
+        return self.cachedItems[key]
+        }
+       
     }
     
-    func value(for key: Key) {
-        guard let index = cachedItems.index(forKey: key) else {return}
-        cachedItems.remove(at: index)
-    }
     
     
-    
-    
+  private var queue = DispatchQueue(label: "com.Yvette.CachSafeQueue")
  private var cachedItems: [Key : Value] = [:]
 }
